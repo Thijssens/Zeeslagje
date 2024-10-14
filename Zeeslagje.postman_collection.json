@@ -1,0 +1,169 @@
+{
+	"info": {
+		"_postman_id": "bdcd2595-9aee-4450-94cd-c9cb8a88b244",
+		"name": "Zeeslagje",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28645569"
+	},
+	"item": [
+		{
+			"name": "Start game",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"password\": \"test\",\n    \"test\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}zeeslagje/start",
+					"host": [
+						"{{url}}zeeslagje"
+					],
+					"path": [
+						"start"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register teams",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Crazy smurf\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}zeeslagje/register/:password",
+					"host": [
+						"{{url}}zeeslagje"
+					],
+					"path": [
+						"register",
+						":password"
+					],
+					"variable": [
+						{
+							"key": "password",
+							"value": "test3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Status game",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}zeeslagje/status/:secret",
+					"host": [
+						"{{url}}zeeslagje"
+					],
+					"path": [
+						"status",
+						":secret"
+					],
+					"variable": [
+						{
+							"key": "secret",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get ships overview",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}zeeslagje/ships/:secret",
+					"host": [
+						"{{url}}zeeslagje"
+					],
+					"path": [
+						"ships",
+						":secret"
+					],
+					"variable": [
+						{
+							"key": "secret",
+							"value": "my_secret"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Place ships",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"secret\": \"5ed0a60f5c02722ffd15e8829a44d861\",\n    \"start\": \"A1\",\n    \"type\": \"carrier\",\n    \"direction\": \"H\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}zeeslagje/ship",
+					"host": [
+						"{{url}}zeeslagje"
+					],
+					"path": [
+						"ship"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Attacks ship",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"secret\": \"278e4a69c347c34ae9cccd0c7eb9551c\",\n    \"position\": \"B5\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}zeeslagje/attack",
+					"host": [
+						"{{url}}zeeslagje"
+					],
+					"path": [
+						"attack"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
