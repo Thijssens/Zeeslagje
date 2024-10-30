@@ -34,9 +34,7 @@ async function registerTeam() {
   console.log(secret);
 }
 
-document
-  .querySelector("#start_button")
-  .addEventListener("click", async (event) => {
+document.querySelector("#start_button").addEventListener("click", async (event) => {
     event.preventDefault();
 
     if (document.querySelector("#game_acces").value === "Maak spel aan") {
@@ -46,3 +44,34 @@ document
       registerTeam();
     }
   });
+
+
+
+async function getStatus() {
+      const response = await fetch(BASE_URL + "status");
+      if (response.ok) {
+          const status = await response.json();
+          console.log("Game status:", status); 
+      } else {
+          console.error("Failed to get game status.");
+      }
+    }
+
+  async function getShips() {
+    const response = await fetch(BASE_URL + 'ships');
+    const data = await response.json();
+    const shipDropdown = document.querySelector('#ship');
+    shipDropdown.innerHTML = ''; 
+
+    data.forEach(ship => {
+        shipDropdown.add(new Option(ship.name));  
+        console.log(shipDropdown);
+    });
+
+  
+}
+
+
+
+
+
