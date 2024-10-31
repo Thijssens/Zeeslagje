@@ -1,5 +1,7 @@
 const BASE_URL = "https://koene.cvoatweb.be/api/public/zeeslagje/";
 
+let secret = "";
+
 function getPassword() {
   let password = document.querySelector("#password").value;
   return password;
@@ -20,6 +22,7 @@ async function startGame() {
   console.log(response);
 }
 
+
 async function registerTeam() {
   let name = getTeamName();
 
@@ -30,7 +33,10 @@ async function registerTeam() {
     body: JSON.stringify({ name }),
   });
 
-  let secret = await response.json();
+  let data = await response.json();
+  if (data.secret) {
+    secret = data.secret;
+  }
   console.log(secret);
 }
 
@@ -47,29 +53,28 @@ document.querySelector("#start_button").addEventListener("click", async (event) 
 
 
 
-async function getStatus() {
-      const response = await fetch(BASE_URL + "status");
+
+async function getStatus() {  
+
+      const response = await fetch(BASE_URL + "status/" + secret);
       if (response.ok) {
           const status = await response.json();
           console.log("Game status:", status); 
       } else {
           console.error("Failed to get game status.");
+          console.log(secret);
       }
-    }
+      
+  }
 
-  async function getShips() {
-    const response = await fetch(BASE_URL + 'ships');
-    const data = await response.json();
-    const shipDropdown = document.querySelector('#ship');
-    shipDropdown.innerHTML = ''; 
 
-    data.forEach(ship => {
-        shipDropdown.add(new Option(ship.name));  
-        console.log(shipDropdown);
-    });
+    document.querySelector("#status_button").addEventListener("click", getStatus);
+
+
+ 
 
   
-}
+
 
 
 
