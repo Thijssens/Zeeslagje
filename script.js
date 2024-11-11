@@ -47,6 +47,7 @@ async function createGame() {
   if (document.querySelector("#game_acces").value === "Maak spel aan") {
     await startGame();
     await registerTeam();
+    playGame("");
   } else {
     await registerTeam();
   }
@@ -56,6 +57,16 @@ async function getStatus(secret) {
   const response = await fetch(BASE_URL + "status/" + secret);
   const status = await response.json();
   console.log("Game status:", status);
+
+  //maak eigen bord clickbaar enkel wanneer je de schepen nog moet plaatsen
+
+  document.querySelector("#my-board").addEventListener("click", (event) => {
+    let target = document.getElementById(event.target.id);
+    let cell = target.id.slice(1);
+    console.log(cell);
+
+    document.querySelector("#start-position").innerText = cell;
+  });
 }
 
 async function getShips(secret) {
@@ -64,15 +75,45 @@ async function getShips(secret) {
   console.log(ships);
 
   let select = document.querySelector("#ship"); //select in HTML
-  document.querySelector("#ship_first_option").innerText =
-    "Selecteer een schip";
+
+  select.innerHTML = null;
+
+  select.add(new Option("Selecteer een schip"));
 
   ships.forEach((ship) => {
     // vult de select op
     const option = document.createElement("option");
     option.value = ship.name;
-    option.text = ship.quantity + " x " + ship.name;
+    option.text = ship.name;
+    if (ship.quantity === 0) {
+      option.disabled = true;
+    }
     select.add(option);
+  });
+
+  document.querySelector("#ship").addEventListener("change", () => {
+    viewShipDetails(ships);
+  });
+}
+
+function viewShipDetails(ships) {
+  const selectedShip = document.querySelector("#ship").value;
+  let quantity = document.querySelector("#ship-quantity");
+  let length = document.querySelector("#ship-length");
+  console.log("hallo");
+
+  if (selectedShip === "Selecteer een schip") {
+    quantity.innerText = "";
+    length.innerText = "";
+    return;
+  }
+
+  ships.forEach((ship) => {
+    if (ship.name === selectedShip) {
+      quantity.innerText = ship.quantity;
+      length.innerText = ship.length;
+      return;
+    }
   });
 }
 
@@ -87,5 +128,3 @@ document
     event.preventDefault();
     createGame();
   });
-
-document.querySelector("#status_button").addEventListener("click", getStatus);
