@@ -108,3 +108,7 @@ button:hover {
 #ship {
   width: 100%;
 }
+
+.ship {
+  background-color: darkslategray;
+}
