@@ -57,6 +57,8 @@ async function createGame() {
 async function getStatus(secret) {
   const response = await fetch(BASE_URL + "status/" + secret);
   const gameStatus = await response.json();
+  const myTeam = gameStatus.myTeamName;
+  const enemyTeam = gameStatus.opponentTeamName;
   console.log("Game status:", gameStatus);
 
   fillBoard(gameStatus.myBoard, "m"); //vult mijn speelbord in
@@ -76,12 +78,38 @@ async function getStatus(secret) {
     gameStatus.isOpponentReady === true &&
     gameStatus.yourTurn === true
   ) {
+    // je kan enkel aanvallen wanneer het jouw beurt is
     document
       .querySelector("#opponent-board")
       .addEventListener("click", (event) => {
         let cell = getCell(event);
         attackShips(cell, secret);
       });
+  }
+
+  //toon wie aan de beurt is
+
+  if (gameStatus.isReady === true && gameStatus.isOpponentReady === true) {
+    if (gameStatus.yourTurn === true) {
+      document.querySelector("#turn-indicator").innerText =
+        myTeam + " is aan de beurt.";
+    }
+    if (gameStatus.yourTurn === false) {
+      document.querySelector("#turn-indicator").innerText =
+        enemyTeam + " is aan de beurt.";
+    }
+  }
+
+  //toon wie er is gewonnen
+  if (gameStatus.victory === true && gameStatus.lost === false) {
+    //ik weet niet of deze && meerwaarde biedt, maar dubbele beviliging kan geen kwaad
+    document.querySelector("#turn-indicator").innerText =
+      myTeam + " is gewonnen!";
+  }
+
+  if (gameStatus.lost === true && gameStatus.victory === false) {
+    document.querySelector("#turn-indicator").innerText =
+      enemyTeam + " is gewonnen :(";
   }
 }
 
