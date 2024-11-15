@@ -112,3 +112,8 @@ button:hover {
 .ship {
   background-color: darkslategray;
 }
+
+#turn-indicator {
+  font-size: 40px;
+  font-weight: bold;
+}

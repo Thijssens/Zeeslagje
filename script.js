@@ -54,10 +54,28 @@ async function createGame() {
   }
 }
 //--------------------------------------------SPEEL SPEL-----------------------------------------------------------------------
+function playGame(secret) {
+  document.querySelector("#game-comment").innerText = "Plaats uw schepen";
+  let gameStatus = setInterval(getStatus, 1000, secret);
+  // let gameStatus = getStatus(secret);
+  getShips(secret);
+
+  document.querySelector("#place-ship").addEventListener("click", () => {
+    placeShip(secret, gameStatus);
+  });
+}
+
+
+
 async function getStatus(secret) {
   const response = await fetch(BASE_URL + "status/" + secret);
   const gameStatus = await response.json();
+  const myTeam = gameStatus.myTeamName;
+  const enemyTeam = gameStatus.opponentTeamName;
   console.log("Game status:", gameStatus);
+
+  document.querySelector("#my-name").innerText = myTeam;
+  document.querySelector("#opponent-name").innerText = enemyTeam;
 
   fillBoard(gameStatus.myBoard, "m"); //vult mijn speelbord in
 
@@ -76,12 +94,40 @@ async function getStatus(secret) {
     gameStatus.isOpponentReady === true &&
     gameStatus.yourTurn === true
   ) {
+    // je kan enkel aanvallen wanneer het jouw beurt is
     document
       .querySelector("#opponent-board")
       .addEventListener("click", (event) => {
         let cell = getCell(event);
         attackShips(cell, secret);
       });
+  }
+
+  //toon wie aan de beurt is
+
+  if (gameStatus.isReady === true && gameStatus.isOpponentReady === true) {
+    document.querySelector("#game-comment").innerText = "Speel!";
+
+    if (gameStatus.yourTurn === true) {
+      document.querySelector("#turn-indicator").innerText =
+        myTeam + " is aan de beurt.";
+    }
+    if (gameStatus.yourTurn === false) {
+      document.querySelector("#turn-indicator").innerText =
+        enemyTeam + " is aan de beurt.";
+    }
+  }
+
+  //toon wie er is gewonnen
+  if (gameStatus.victory === true && gameStatus.lost === false) {
+    //ik weet niet of deze && meerwaarde biedt, maar dubbele beviliging kan geen kwaad
+    document.querySelector("#turn-indicator").innerText =
+      myTeam + " is gewonnen!";
+  }
+
+  if (gameStatus.lost === true && gameStatus.victory === false) {
+    document.querySelector("#turn-indicator").innerText =
+      enemyTeam + " is gewonnen :(";
   }
 }
 
@@ -161,15 +207,6 @@ async function attackShips(position, secret) {
   console.log(data);
 }
 
-function playGame(secret) {
-  let gameStatus = setInterval(getStatus, 1000, secret);
-  // let gameStatus = getStatus(secret);
-  getShips(secret);
-
-  document.querySelector("#place-ship").addEventListener("click", () => {
-    placeShip(secret, gameStatus);
-  });
-}
 
 function getCell(event) {
   let target = document.getElementById(event.target.id); //ophalen van coordinaten verplaatst in functie
