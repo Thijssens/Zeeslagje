@@ -19,7 +19,6 @@ async function startGame() {
     method: "POST",
     body: JSON.stringify({ password }),
   });
-  console.log(response);
 }
 
 async function registerTeam() {
@@ -39,8 +38,6 @@ async function registerTeam() {
   if (secret) {
     playGame(secret);
   }
-
-  console.log(secret);
 }
 
 async function createGame() {
@@ -65,14 +62,11 @@ function playGame(secret) {
   });
 }
 
-
-
 async function getStatus(secret) {
   const response = await fetch(BASE_URL + "status/" + secret);
   const gameStatus = await response.json();
   const myTeam = gameStatus.myTeamName;
   const enemyTeam = gameStatus.opponentTeamName;
-  console.log("Game status:", gameStatus);
 
   document.querySelector("#my-name").innerText = myTeam;
   document.querySelector("#opponent-name").innerText = enemyTeam;
@@ -134,7 +128,6 @@ async function getStatus(secret) {
 async function getShips(secret) {
   const response = await fetch(BASE_URL + "ships/" + secret);
   const ships = await response.json();
-  console.log(ships);
 
   let select = document.querySelector("#ship"); //select in HTML
 
@@ -193,7 +186,6 @@ async function placeShip(secret, gameStatus) {
     body: JSON.stringify({ secret, start, type, direction }),
   });
   let data = await response.json();
-  console.log(data);
 
   getShips(secret);
 }
@@ -204,14 +196,11 @@ async function attackShips(position, secret) {
     body: JSON.stringify({ secret, position }),
   });
   let data = await response.json();
-  console.log(data);
 }
-
 
 function getCell(event) {
   let target = document.getElementById(event.target.id); //ophalen van coordinaten verplaatst in functie
   let cell = target.id.slice(1);
-  console.log(cell);
 
   return cell;
 }
@@ -236,7 +225,6 @@ function fillBoard(board, player) {
       }
     }
   }
-  console.log(placedShips);
   placedShips.forEach((coordinate) => {
     document.querySelector("#" + player + coordinate).classList.add("ship");
   });
