@@ -68,6 +68,7 @@ async function getStatus(secret) {
   const myTeam = gameStatus.myTeamName;
   const enemyTeam = gameStatus.opponentTeamName;
 
+
   document.querySelector("#my-name").innerText = myTeam;
   document.querySelector("#opponent-name").innerText = enemyTeam;
 
@@ -100,8 +101,8 @@ async function getStatus(secret) {
   //toon wie aan de beurt is
 
   if (gameStatus.isReady === true && gameStatus.isOpponentReady === true) {
-    document.querySelector("#game-comment").innerText = "Speel!";
 
+    document.querySelector("#game-comment").innerText = "Speel!";
     if (gameStatus.yourTurn === true) {
       document.querySelector("#turn-indicator").innerText =
         myTeam + " is aan de beurt.";
